@@ -3,27 +3,54 @@ import React, { useState } from 'react'
 function App() {
   let [text, setText] = useState("");
   let [todo, setTodo] = useState([]);
+  let [disabled, setDisabled] = useState(true);
+  let [disedit, setDisedit] = useState(false);
+  let [index, setIndex] = useState(0);
+
   function todoVal(e) {
     setText(e.target.value);
   }
   function addTodo() {
+    setDisabled(true)
     setTodo([
       ...todo, {
         title: text
       }
     ])
     setText("")
-    // console.log(todo);
   }
 
+
+  // Delete Todo
+
+
   function deleteTodo(e) {
-    // console.log(e);
-    let filter = todo.filter((item , i)=>{
-      return i != e
+    let filter = todo.filter((item, i) => {
+      return i !== e
     })
-    console.log(filter);
-    setTodo(filter)
+    setTodo(filter);
   }
+
+  // Edit Todo
+
+  function editTodo(e) {
+    setText(todo[e].title);
+    setDisabled(false);
+    setIndex(e);
+    setDisedit(true);
+  }
+
+  //save Todo
+
+  function saveTodo() {
+    const newArray = [...todo];
+    newArray[index] = {title: text};
+    setTodo(newArray);
+    setText("");
+    setDisedit(false);
+  }
+
+
   return (
     <div style={{ marginLeft: "45%" }}>
       <h1>Todo App</h1>
@@ -31,12 +58,13 @@ function App() {
         <input value={text} onChange={todoVal} type="text" />
       </label> <br /><br />
       <button onClick={addTodo}>Add Todo</button>
+      <button disabled={disabled} onClick={saveTodo} >Edit Todo</button>
       <div>
         {todo.map((item, i) => {
           return <div key={i}>
             <p >{item.title}</p>
-            <button>Edit</button>
             <button onClick={() => deleteTodo(i)}>Delete</button>
+            <button disabled={disedit} onClick={() => editTodo(i)}>Edit</button>
           </div>
         })}
       </div>
@@ -45,48 +73,4 @@ function App() {
   )
 }
 
-export default App
-// import "./App.css";
-// import { useState } from "react";
-
-// function App() {
-//   const [text, settext] = useState("");
-//   const [tasks, settasks] = useState([]);
-//   let handleOnChange = (val) => {
-//     settext(val.target.value);
-//   };
-//   let addTsks = () => {
-//     settasks([...tasks,  text ]);
-//     settext("");
-//   };
-//   let deleteTasks = (id)=>{
-// let fltr = tasks.filter((val,indx)=>{
-//   return indx !== id;
-// })
-// console.log(fltr);
-// settasks(fltr);
-//   }
-
-//   return (
-//     <>
-//       <div className="App App-header">
-//         <h2> Todo List: </h2>
-//         <div>
-//           <input
-//             placeholder="Enter task here..."
-//             value={text}
-//             onChange={handleOnChange}
-//           />
-//           <button onClick={addTsks}>Add</button>
-//         </div>
-//         <div>
-//           {tasks.map((items,index)=>{ return <p key={index}>{items} <button >Edit</button><button onClick={()=>{
-//             deleteTasks(index)
-//           }}>Delete</button></p>  })}
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default App;
+export default App;
