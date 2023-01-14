@@ -5,6 +5,7 @@ function App() {
   let [todo, setTodo] = useState([]);
   let [disabled, setDisabled] = useState(true);
   let [disedit, setDisedit] = useState(false);
+  let [disAdd, setDisAdd] = useState(false);
   let [index, setIndex] = useState(0);
 
   function todoVal(e) {
@@ -38,6 +39,7 @@ function App() {
     setDisabled(false);
     setIndex(e);
     setDisedit(true);
+    setDisAdd(true);
   }
 
   //save Todo
@@ -48,6 +50,8 @@ function App() {
     setTodo(newArray);
     setText("");
     setDisedit(false);
+    setDisAdd(false);
+    setDisabled(true);
   }
 
 
@@ -57,7 +61,7 @@ function App() {
       <label> Enter Text Here: <br />
         <input value={text} onChange={todoVal} type="text" />
       </label> <br /><br />
-      <button onClick={addTodo}>Add Todo</button>
+      <button disabled={disAdd} onClick={addTodo}>Add Todo</button>
       <button disabled={disabled} onClick={saveTodo} >Edit Todo</button>
       <div>
         {todo.map((item, i) => {
